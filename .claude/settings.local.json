@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm --version)",
+      "PowerShell(pnpm --version)",
+      "PowerShell(node --version)",
+      "PowerShell(corepack enable)",
+      "PowerShell(corepack prepare pnpm@latest --activate)",
+      "PowerShell(npm install -g pnpm)",
+      "PowerShell(Move-Item -Path \"skills-lock.json\" -Destination \"$env:TEMP\\\\veyra-skills-lock.json\" -Force; Get-ChildItem -Force | Select-Object Name)"
+    ]
+  }
+}
