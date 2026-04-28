@@ -7,7 +7,11 @@
       "PowerShell(corepack enable)",
       "PowerShell(corepack prepare pnpm@latest --activate)",
       "PowerShell(npm install -g pnpm)",
-      "PowerShell(Move-Item -Path \"skills-lock.json\" -Destination \"$env:TEMP\\\\veyra-skills-lock.json\" -Force; Get-ChildItem -Force | Select-Object Name)"
+      "PowerShell(Move-Item -Path \"skills-lock.json\" -Destination \"$env:TEMP\\\\veyra-skills-lock.json\" -Force; Get-ChildItem -Force | Select-Object Name)",
+      "PowerShell(Move-Item -Path \"$env:TEMP\\\\veyra-skills-lock.json\" -Destination \"skills-lock.json\" -Force)",
+      "PowerShell(pnpm add @tanstack/react-query @tanstack/react-query-devtools @tanstack/react-table zustand nuqs axios react-hook-form @hookform/resolvers zod framer-motion lucide-react date-fns @dnd-kit/core @dnd-kit/sortable sonner uuid class-variance-authority clsx tailwind-merge geist)",
+      "PowerShell(Get-Content \"package.json\" | ConvertFrom-Json | ForEach-Object { $_.dependencies.PSObject.Properties | Select-Object Name, Value })",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('DEPS:', Object.keys\\(p.dependencies\\).join\\(', '\\)\\); console.log\\('DEV:', Object.keys\\(p.devDependencies\\).join\\(', '\\)\\)\")"
     ]
   }
 }
