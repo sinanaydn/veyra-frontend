@@ -1,26 +1,24 @@
 /**
  * Brands resource.
- *   GET    /brands           public
+ *   GET    /brands           public — returns Brand[] (NOT paginated, per api-docs)
  *   GET    /brands/{id}      public
  *   POST   /brands           ADMIN
  *   PUT    /brands/{id}      ADMIN
  *   DELETE /brands/{id}      ADMIN
  */
 
-import { http, cleanParams } from "../client";
-import type { ApiResult, PageResponse } from "../envelope";
+import { http } from "../client";
+import type { ApiResult } from "../envelope";
 import type {
   Brand,
   CreateBrandRequest,
-  Pageable,
   UpdateBrandRequest,
 } from "../types";
 
 export const brandsApi = {
-  list: async (pageable: Pageable = {}): Promise<PageResponse<Brand>> => {
-    const res = await http.get<ApiResult<PageResponse<Brand>>>("/brands", {
-      params: cleanParams({ ...pageable }),
-    });
+  /** Returns the full brand list — backend is not paginated for this resource. */
+  list: async (): Promise<Brand[]> => {
+    const res = await http.get<ApiResult<Brand[]>>("/brands");
     return res.data.data;
   },
 

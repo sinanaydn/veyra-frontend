@@ -116,23 +116,36 @@ export function useTheme(): ThemeContextValue {
 }
 
 /**
- * Inline script — must be rendered in <head> before any other JS.
- * Sets the dark class on <html> before paint, eliminating theme flash.
+ * Inline script — runs before paint, sets `class="dark"` on <html> based
+ * on stored/system preference. Eliminates theme flash on cold loads.
+ *
+ * Implementation: Next.js `<Script strategy="beforeInteractive">` is the
+ * supported way in Next 16 / React 19. Plain `<script>` JSX triggers a
+ * dev-mode warning ("scripts inside React components are never executed
+ * when rendering on the client") and is brittle.
  *
  * Self-contained: no React, no module imports. Reads localStorage and
  * `prefers-color-scheme` synchronously.
  */
+import Script from "next/script";
+
+const THEME_BOOT_CODE = `(function(){try{
+var k='${STORAGE_KEY}';
+var s=localStorage.getItem(k);
+var resolved=s==='light'?'light':s==='dark'?'dark':
+  (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+var root=document.documentElement;
+if(resolved==='dark')root.classList.add('dark');else root.classList.remove('dark');
+root.dataset.theme=resolved;
+}catch(e){}})();`;
+
 export function ThemeScript() {
-  const code = `
-(function(){try{
-  var k='${STORAGE_KEY}';
-  var s=localStorage.getItem(k);
-  var resolved = s==='light' ? 'light' : s==='dark' ? 'dark' :
-    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  var root=document.documentElement;
-  if(resolved==='dark') root.classList.add('dark'); else root.classList.remove('dark');
-  root.dataset.theme = resolved;
-}catch(e){}})();
-`;
-  return <script dangerouslySetInnerHTML={{ __html: code }} />;
+  return (
+    <Script
+      id="veyra-theme-boot"
+      strategy="beforeInteractive"
+    >
+      {THEME_BOOT_CODE}
+    </Script>
+  );
 }

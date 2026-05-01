@@ -46,7 +46,10 @@ export default function RootLayout({
         {/* Must run before paint — sets `class="dark"` on <html> */}
         <ThemeScript />
       </head>
-      <body className="min-h-svh bg-background text-foreground antialiased">
+      <body
+        className="min-h-svh bg-background text-foreground antialiased"
+        suppressHydrationWarning
+      >
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-foreground focus:shadow-lg"

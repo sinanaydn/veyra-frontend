@@ -6,10 +6,19 @@
  * attacker can't add custom headers without a CORS preflight (which our
  * backend does not allow), so this header proves the request originated
  * from our own JavaScript.
+ *
+ * Body strategy: we buffer the upstream response into an ArrayBuffer
+ * before returning. Streaming `upstream.body` directly into a NextResponse
+ * works on Node runtime but is brittle under Turbopack dev — the stream
+ * sometimes drains to an empty body. Buffering is more reliable and
+ * negligibly slower for our small JSON payloads. Multipart UPLOADS
+ * (request side) still stream via duplex: 'half'.
  */
 
 import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
+
+export const runtime = "nodejs";
 
 const BACKEND = process.env.BACKEND_URL ?? "http://localhost:8080";
 
@@ -18,6 +27,16 @@ const ALLOWED_FORWARD_HEADERS = new Set([
   "accept",
   "accept-language",
   "x-idempotency-key",
+]);
+
+// Hop-by-hop and connection-specific headers we should NOT relay back.
+const STRIP_RESPONSE_HEADERS = new Set([
+  "set-cookie",
+  "transfer-encoding",
+  "connection",
+  "keep-alive",
+  "content-encoding", // upstream may send gzip; we re-send raw bytes
+  "content-length", // recomputed by Next from the buffered body
 ]);
 
 const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
@@ -56,13 +75,17 @@ async function handle(
   };
   if (!["GET", "HEAD"].includes(req.method)) {
     init.body = req.body;
-    init.duplex = "half"; // required for streaming bodies in Node 18+
+    init.duplex = "half";
   }
 
   let upstream: Response;
   try {
     upstream = await fetch(url, init);
-  } catch {
+  } catch (err) {
+    if (process.env.NODE_ENV === "development") {
+      // eslint-disable-next-line no-console
+      console.error("[proxy] backend unreachable:", url, err);
+    }
     return NextResponse.json(
       {
         success: false,
@@ -74,13 +97,16 @@ async function handle(
     );
   }
 
-  // Strip set-cookie — backend cookies must never reach the browser.
+  // Buffer the body — see file header for rationale.
+  const buffer = await upstream.arrayBuffer();
+
+  // Filter response headers
   const resHeaders = new Headers();
   upstream.headers.forEach((v, k) => {
-    if (k.toLowerCase() !== "set-cookie") resHeaders.set(k, v);
+    if (!STRIP_RESPONSE_HEADERS.has(k.toLowerCase())) resHeaders.set(k, v);
   });
 
-  return new NextResponse(upstream.body, {
+  return new NextResponse(buffer, {
     status: upstream.status,
     headers: resHeaders,
   });

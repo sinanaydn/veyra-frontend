@@ -1,6 +1,6 @@
 /**
  * Car models resource.
- *   GET    /models?brandId=  public (brandId optional)
+ *   GET    /models?brandId=  public — returns CarModel[] (NOT paginated, per api-docs)
  *   GET    /models/{id}      public
  *   POST   /models           ADMIN
  *   PUT    /models/{id}      ADMIN
@@ -8,11 +8,10 @@
  */
 
 import { http, cleanParams } from "../client";
-import type { ApiResult, PageResponse } from "../envelope";
+import type { ApiResult } from "../envelope";
 import type {
   CarModel,
   CreateCarModelRequest,
-  Pageable,
   UpdateCarModelRequest,
 } from "../types";
 
@@ -21,12 +20,9 @@ export interface ModelFilter {
 }
 
 export const modelsApi = {
-  list: async (
-    filter: ModelFilter = {},
-    pageable: Pageable = {},
-  ): Promise<PageResponse<CarModel>> => {
-    const res = await http.get<ApiResult<PageResponse<CarModel>>>("/models", {
-      params: cleanParams({ ...filter, ...pageable }),
+  list: async (filter: ModelFilter = {}): Promise<CarModel[]> => {
+    const res = await http.get<ApiResult<CarModel[]>>("/models", {
+      params: cleanParams({ ...filter }),
     });
     return res.data.data;
   },
