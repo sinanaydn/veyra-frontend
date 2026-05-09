@@ -100,6 +100,25 @@ export const t = {
 
     accountLockedBanner:
       "Hesabın 5 hatalı denemenin ardından kilitlendi. 30 dakika sonra tekrar dene.",
+
+    showPassword: "Şifreyi göster",
+    hidePassword: "Şifreyi gizle",
+
+    strength: "Şifre gücü",
+    strengthWeak: "Zayıf",
+    strengthFair: "Orta",
+    strengthStrong: "Güçlü",
+    strengthExcellent: "Çok güçlü",
+
+    asideEyebrow: "ERİŞİM // 01",
+    asideHeadline: "Kapına gelen lüks.",
+    asideHeadlineDim: "Tek tıkla anahtar elinde.",
+    asideStatFleet: "filomdaki araç",
+    asideStatBrands: "premium marka",
+    asideStatCities: "teslim noktası",
+    asideQuote:
+      "Premium hissi, kullanışın kolaylığı. Veyra, kiralamayı yeniden yazıyor.",
+    asideMeta: "VEYRA · TR · TRY",
   },
 
   // ============================================================
@@ -244,6 +263,84 @@ export const t = {
       "Hesabın silindiğinde tüm verilerin kalıcı olarak silinir. Bu işlem geri alınamaz.",
     deleteAccountConfirmEmail:
       "Onaylamak için e-postanı tekrar yaz:",
+    deleteAccountTypeMismatch:
+      "E-postan eşleşmiyor. Tam olarak yazman gerek.",
+    deleteAccountSuccess: "Hesabın silindi. Görüşmek üzere.",
+
+    // Profile snapshot
+    welcomeBack: "Tekrar hoş geldin",
+    memberSince: "Üyelik",
+    sessionId: "Oturum",
+    accountSummary: "Hesap özeti",
+    quickLinks: "Hızlı bağlantılar",
+
+    // Stats
+    statTotalRentals: "Toplam kiralama",
+    statActiveRentals: "Aktif",
+    statSpent: "Harcama",
+    statTotalPayments: "Ödeme",
+
+    // Rentals list
+    rentalsSubtitle: "Tüm kiralama hareketlerin tek bir akışta.",
+    rentalRef: "Rezervasyon",
+    rentalCar: "Araç",
+    rentalDates: "Tarih aralığı",
+    rentalDuration: "Süre",
+    rentalTotal: "Toplam",
+    rentalDays: "{n} gün",
+    rentalCreated: "Oluşturulma",
+    rentalViewDetail: "Detayı gör",
+
+    // Rental detail
+    rentalDetailTitle: "Kiralama detayı",
+    rentalTimelineTitle: "Durum",
+    rentalCarSnapshot: "Araç",
+    rentalActions: "İşlemler",
+    rentalCancelled: "Bu kiralama iptal edildi.",
+    rentalCompleted: "Bu kiralama tamamlandı.",
+    rentalCancelTitle: "Kiralamayı iptal et",
+    rentalCancelDesc:
+      "Bu işlem geri alınamaz. İptal sonrası ödeme yapıldıysa iade süreci destek tarafından yürütülür.",
+    rentalCancelConfirm: "Evet, iptal et",
+    rentalCancelKeep: "Vazgeç",
+
+    // Timeline steps
+    stepPending: "Beklemede",
+    stepConfirmed: "Onaylandı",
+    stepActive: "Aktif",
+    stepCompleted: "Tamamlandı",
+    stepCancelled: "İptal",
+
+    // Payments
+    paymentsSubtitle: "Tüm ödemelerinin kayıtları.",
+    paymentRef: "İşlem",
+    paymentRental: "Kiralama",
+    paymentDate: "Tarih",
+    paymentAmount: "Tutar",
+
+    // Receipt
+    receiptSubtitle: "Lütfen kayıtların için sakla.",
+    receiptIssued: "Düzenlenme",
+    receiptItem: "Hizmet",
+    receiptItemRental: "Araç kiralama",
+    receiptSubtotal: "Ara toplam",
+    receiptVat: "KDV (dahil)",
+    receiptTotal: "Toplam",
+    receiptThanks: "Veyra'yı tercih ettiğin için teşekkürler.",
+    receiptViewRental: "İlgili kiralamayı gör",
+
+    // Settings
+    settingsSubtitle: "Profil bilgilerin ve hesap yönetimi.",
+    profileFullName: "Ad Soyad",
+    profileEmail: "E-posta",
+    profilePhone: "Telefon",
+    profilePhoneEmpty: "Belirtilmemiş",
+    profileMemberSince: "Üye olduğun tarih",
+
+    // Empty states
+    rentalsEmptySub:
+      "İlk rezervasyonunu yap, anahtarın kapına gelsin.",
+    paymentsEmptySub: "Ödeme geçmişin burada görünecek.",
   },
 
   // ============================================================
