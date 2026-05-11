@@ -212,12 +212,55 @@ export const t = {
     payCta: "Ödemeyi Tamamla",
     paying: "Ödeme alınıyor…",
 
+    // Step indicator
+    stepCardLabel: "KART",
+    stepConfirmLabel: "ONAY",
+    stepCardEyebrow: "ADIM 01",
+    stepConfirmEyebrow: "ADIM 02",
+
+    // Card preview
+    cardHolderPlaceholder: "AD SOYAD",
+    cardNumberPlaceholder: "•••• •••• •••• ••••",
+    cardExpiryShortPlaceholder: "••/••",
+    cardCvcPlaceholder: "•••",
+    cardSecureNote: "Bu bir simülasyon ödemesidir. Gerçek kart bilgilerini girme.",
+    cardChipLabel: "VEYRA · GLOBAL",
+    cardBackTagline: "Anahtarın yola hazır.",
+
+    // Validation
+    cardNumberInvalid: "Kart numarası 13–19 haneli olmalı.",
+    cardNameInvalid: "İsim en az 2 karakter olmalı.",
+    cardExpiryInvalid: "Son kullanım AA/YY formatında olmalı.",
+    cardExpiryPast: "Son kullanım tarihi geçmiş.",
+    cardCvcInvalid: "CVC 3–4 haneli olmalı.",
+
+    // Checkout chrome
+    checkoutEyebrow: "ÖDEME // VEYRA",
+    checkoutSecureLine: "256-bit şifreleme · iade güvencesi",
+    summaryRef: "REZERVASYON",
+    summaryDailyRate: "Günlük",
+    summaryDays: "{n} gün",
+    summarySubtotal: "Ara toplam",
+    summaryVat: "KDV (dahil)",
+    summaryTotal: "Toplam",
+    summaryIdemHint: "Aynı oturumda tekrar denemen güvenli.",
+
+    notPendingTitle: "Bu rezervasyon ödemeye uygun değil.",
+    notPendingSub: "Rezervasyon durumunu hesabımdan kontrol et.",
+
+    // Confirmation page
     confirmingTitle: "Rezervasyonun hazırlanıyor…",
     confirmingSub: "Birkaç saniye sürebilir.",
+    confirmingAttempt: "{n}/{max} kontrol",
     confirmedTitle: "Hazır! Anahtarın seni bekliyor.",
     confirmedSub: "Rezervasyonun onaylandı.",
+    confirmedEyebrow: "REZERVASYON ONAYI",
+    pollTimeoutTitle: "İşlemin hâlâ devam ediyor.",
+    pollTimeoutSub:
+      "Onay birkaç dakika sürebilir. Hesabımdan durumu takip edebilirsin.",
     viewRentalsCta: "Kiralamalarıma git",
     viewReceiptCta: "Makbuzu görüntüle",
+    backToCheckoutCta: "Ödemeye dön",
   },
 
   // ============================================================

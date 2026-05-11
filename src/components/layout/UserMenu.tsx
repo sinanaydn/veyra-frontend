@@ -28,7 +28,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -83,14 +82,12 @@ export function UserMenu() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={10} className="w-60">
-        <DropdownMenuLabel className="px-2 py-1.5">
-          <div className="flex flex-col gap-0.5">
-            <span className="truncate text-sm font-medium">{user.email}</span>
-            <span className="font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
-              {role === "ADMIN" ? t.admin.roleAdmin : t.admin.roleUser}
-            </span>
-          </div>
-        </DropdownMenuLabel>
+        <div className="flex flex-col gap-0.5 px-2 py-1.5">
+          <span className="truncate text-sm font-medium">{user.email}</span>
+          <span className="font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+            {role === "ADMIN" ? t.admin.roleAdmin : t.admin.roleUser}
+          </span>
+        </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem render={<Link href="/account" />}>
           <UserIcon className="size-4" aria-hidden />
