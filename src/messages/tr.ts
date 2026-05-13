@@ -432,6 +432,161 @@ export const t = {
     imagesPrimary: "Kapak",
     imagesDelete: "Sil",
     imagesReorderHint: "Sürükleyerek sırasını değiştir.",
+
+    // ─── Editorial chrome ───
+    eyebrowDashboard: "VEYRA · YÖNETİM // 00",
+    eyebrowBrands: "KATALOG // 01",
+    eyebrowModels: "KATALOG // 02",
+    eyebrowCars: "KATALOG // 03",
+    eyebrowImages: "KATALOG // 04",
+    eyebrowRentals: "OPERASYON // 05",
+    eyebrowPayments: "OPERASYON // 06",
+    eyebrowUsers: "OPERASYON // 07",
+
+    dashboardSubtitle:
+      "Operasyon ve katalog tek bir akışta — anlık durum, hızlı eylem.",
+
+    // Dashboard stats
+    statTotalRentals: "Toplam kiralama",
+    statActiveRentals: "Aktif kiralama",
+    statTotalPayments: "Tamamlanan ödeme",
+    statRevenue: "Toplam ciro",
+    statFleet: "Filo (araç)",
+    statBrands: "Marka",
+    statModels: "Model",
+    statUsers: "Kullanıcı",
+
+    recentRentals: "Son rezervasyonlar",
+    recentPayments: "Son ödemeler",
+    viewAll: "Hepsini gör",
+
+    // Brands page
+    brandsSubtitle: "Filodaki tüm markalar.",
+    brandFormTitle: "Marka",
+    brandFormCreate: "Yeni marka",
+    brandFormEdit: "Markayı düzenle",
+    brandNameLabel: "Marka adı",
+    brandNamePlaceholder: "Örn. Volvo",
+    brandsEmpty: "Henüz marka eklemedin.",
+    brandDeletedTitle: "Marka silindi.",
+    brandCreatedTitle: "Marka eklendi.",
+    brandUpdatedTitle: "Marka güncellendi.",
+
+    // Models
+    modelsSubtitle: "Markalara bağlı tüm modeller.",
+    modelFormTitle: "Model",
+    modelFormCreate: "Yeni model",
+    modelFormEdit: "Modeli düzenle",
+    modelNameLabel: "Model adı",
+    modelNamePlaceholder: "Örn. XC60",
+    modelBrandLabel: "Marka",
+    modelsEmpty: "Bu kriterlere uygun model yok.",
+    modelCreatedTitle: "Model eklendi.",
+    modelUpdatedTitle: "Model güncellendi.",
+    modelDeletedTitle: "Model silindi.",
+
+    // Cars
+    carsSubtitle: "Filodaki tüm araçlar.",
+    carFormCreate: "Yeni araç",
+    carFormEdit: "Aracı düzenle",
+    carFormSubtitleCreate:
+      "Modeli seç, özellikleri gir. Görselleri sonra ekleyebilirsin.",
+    carFormSubtitleEdit:
+      "Araç özelliklerini ve durumunu güncelle. Görseller ayrı yönetilir.",
+    carsEmpty: "Filoda henüz araç yok.",
+    carCreatedTitle: "Araç eklendi.",
+    carUpdatedTitle: "Araç güncellendi.",
+    carDeletedTitle: "Araç silindi.",
+
+    // Car form fields
+    fieldBrand: "Marka",
+    fieldModel: "Model",
+    fieldYear: "Yıl",
+    fieldDoors: "Kapı",
+    fieldBaggages: "Bagaj",
+    fieldSeats: "Koltuk",
+    fieldDailyPrice: "Günlük ücret (₺)",
+    fieldFuel: "Yakıt",
+    fieldTransmission: "Vites",
+    fieldColor: "Renk",
+    fieldMileage: "Kilometre",
+    fieldDescription: "Açıklama",
+    fieldStatus: "Durum",
+    fieldBrandPlaceholder: "Marka seç…",
+    fieldModelPlaceholder: "Model seç…",
+    fieldStatusPlaceholder: "Durum seç…",
+
+    statusAvailable: "Müsait",
+    statusRented: "Kirada",
+    statusMaintenance: "Bakımda",
+
+    // Images
+    imagesSubtitle: "Yükle, sırala, kapak seç. Maks. 10 görsel.",
+    imagesEmpty: "Bu araç için henüz görsel yok.",
+    imageUploaded: "Görsel yüklendi.",
+    imageUploadFailed: "Görsel yüklenemedi.",
+    imageInvalidType: "Sadece JPEG, PNG veya WebP yükleyebilirsin.",
+    imageTooLarge: "Görsel 5 MB'tan büyük olamaz.",
+    imageReorderFailed: "Sıralama kaydedilemedi.",
+    imagePrimaryUpdated: "Kapak görseli güncellendi.",
+    imageDeleted: "Görsel silindi.",
+    backToCar: "Araca dön",
+
+    // Rentals admin
+    rentalsAdminSubtitle:
+      "Tüm rezervasyonlar — kullanıcı kimliğine göre filtrele, tamamla veya iptal et.",
+    rentalsEmpty: "Bu kriterlere uygun kiralama yok.",
+    filterByUserId: "Kullanıcı ID",
+    filterByStatus: "Durum",
+    filterReset: "Filtreleri sıfırla",
+    allStatuses: "Tümü",
+    rentalCompletedTitle: "Kiralama tamamlandı.",
+    rentalCancelledTitle: "Kiralama iptal edildi.",
+    rentalCompleteConfirm:
+      "Bu kiralamayı tamamlanmış olarak işaretlemek istediğine emin misin?",
+    rentalCancelConfirmAdmin:
+      "Bu kiralamayı iptal etmek istediğine emin misin? Bu işlem geri alınamaz.",
+
+    // Payments admin
+    paymentsAdminSubtitle: "Tüm ödemelerin denetim kaydı. Salt okunur.",
+    paymentsEmpty: "Bu kriterlere uygun ödeme yok.",
+    paymentRefShort: "İşlem",
+    paymentRentalShort: "Kiralama",
+
+    // Users
+    usersSubtitle: "Tüm kullanıcılar — rol değiştir, hesap kapat.",
+    usersEmpty: "Henüz kullanıcı yok.",
+    userYou: "Sen",
+    userDeleted: "Kullanıcı silindi.",
+    userRoleChanged: "Rol güncellendi.",
+    promoteUser: "Yönetici yap",
+    demoteUser: "Kullanıcıya çevir",
+
+    // Common admin chrome
+    tableId: "ID",
+    tableName: "Ad",
+    tableEmail: "E-posta",
+    tablePhone: "Telefon",
+    tableCreatedAt: "Eklenme",
+    tableActions: "İşlem",
+    tableBrand: "Marka",
+    tableModel: "Model",
+    tableYear: "Yıl",
+    tablePrice: "Günlük",
+    tableStatus: "Durum",
+    tableCustomer: "Kullanıcı",
+    tableDates: "Tarih",
+    tableTotal: "Toplam",
+    tableAmount: "Tutar",
+    tableRental: "Kiralama",
+    tableFuel: "Yakıt",
+    tableTransmission: "Vites",
+    rowsCount: "{n} kayıt",
+    pageOf: "{a} / {b}",
+    confirmTitle: "Emin misin?",
+    confirmDeleteTitle: "Silmek istediğine emin misin?",
+    confirmDestructiveCta: "Evet, sil",
+    confirmKeepCta: "Vazgeç",
   },
 
   // ============================================================

@@ -83,7 +83,6 @@ async function handle(
     upstream = await fetch(url, init);
   } catch (err) {
     if (process.env.NODE_ENV === "development") {
-      // eslint-disable-next-line no-console
       console.error("[proxy] backend unreachable:", url, err);
     }
     return NextResponse.json(

@@ -40,16 +40,20 @@ export function CarGallery({ images, alt }: CarGalleryProps) {
   const [activeIdx, setActiveIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
 
-  const active = sorted[activeIdx];
   const total = sorted.length;
+  // Clamp at read-time — avoids an effect that resets state when the
+  // image array shrinks (e.g. admin deletes the last image while we're
+  // viewing). `safeIdx` is always a valid index into `sorted`.
+  const safeIdx = total > 0 ? Math.min(activeIdx, total - 1) : 0;
+  const active = sorted[safeIdx];
 
-  // Reset on image array change.
-  useEffect(() => {
-    if (activeIdx >= total) setActiveIdx(0);
-  }, [total, activeIdx]);
-
-  const next = () => setActiveIdx((i) => (i + 1) % Math.max(1, total));
-  const prev = () => setActiveIdx((i) => (i - 1 + total) % Math.max(1, total));
+  const next = () =>
+    setActiveIdx((i) => (Math.min(i, total - 1) + 1) % Math.max(1, total));
+  const prev = () =>
+    setActiveIdx(
+      (i) =>
+        (Math.min(i, total - 1) - 1 + total) % Math.max(1, total),
+    );
 
   // Keyboard nav inside lightbox
   useEffect(() => {
@@ -99,7 +103,7 @@ export function CarGallery({ images, alt }: CarGalleryProps) {
         </span>
         {total > 1 && (
           <span className="absolute bottom-4 right-4 rounded-full bg-background/70 px-3 py-1 font-mono text-[0.65rem] font-medium tabular-nums text-foreground ring-1 ring-inset ring-border/50 backdrop-blur" data-numeric>
-            {activeIdx + 1} / {total}
+            {safeIdx + 1} / {total}
           </span>
         )}
       </button>
@@ -108,7 +112,7 @@ export function CarGallery({ images, alt }: CarGalleryProps) {
       {total > 1 && (
         <ul className="scrollbar-none mt-3 flex gap-2 overflow-x-auto">
           {sorted.map((img, idx) => {
-            const isActive = idx === activeIdx;
+            const isActive = idx === safeIdx;
             return (
               <li key={img.id} className="shrink-0">
                 <button
@@ -186,7 +190,7 @@ export function CarGallery({ images, alt }: CarGalleryProps) {
                   className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-background/80 px-3 py-1 font-mono text-xs tabular-nums text-foreground ring-1 ring-inset ring-border backdrop-blur"
                   data-numeric
                 >
-                  {activeIdx + 1} / {total}
+                  {safeIdx + 1} / {total}
                 </span>
               </>
             )}

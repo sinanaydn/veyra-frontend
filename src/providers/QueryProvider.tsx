@@ -26,7 +26,10 @@ function makeClient(): QueryClient {
       queries: {
         staleTime: 30_000,
         gcTime: 5 * 60_000,
-        refetchOnWindowFocus: false,
+        // Refetch on tab focus → cached presigned image URLs (TTL ~60 min)
+        // get refreshed when the user returns to a long-idle tab. Without
+        // this, an old tab serves expired URLs and images break (403).
+        refetchOnWindowFocus: true,
         retry: (failureCount, err) => {
           // Don't retry client errors (4xx), they won't change on retry.
           if (err instanceof ApiError && err.isClientError) return false;
@@ -41,7 +44,6 @@ function makeClient(): QueryClient {
       // Global query error logging hook (dev visibility, prod silent).
       onError: (err) => {
         if (process.env.NODE_ENV === "development") {
-          // eslint-disable-next-line no-console
           console.error("[query]", err);
         }
       },

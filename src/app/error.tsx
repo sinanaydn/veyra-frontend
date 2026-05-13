@@ -22,7 +22,6 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-      // eslint-disable-next-line no-console
       console.error("[root error]", error);
     }
   }, [error]);

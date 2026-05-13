@@ -74,6 +74,12 @@ export type RegisterFormValues = z.infer<typeof registerSchema>;
 const currentYear = new Date().getFullYear();
 
 export const carFormSchema = z.object({
+  // Transient UI-only — used for the brand→model cascade.
+  // Not sent to the backend; we extract `modelId` only.
+  brandId: z.coerce
+    .number({ message: "Marka seçin." })
+    .int()
+    .positive("Marka seçin."),
   modelId: z.coerce
     .number({ message: "Model seçin." })
     .int()

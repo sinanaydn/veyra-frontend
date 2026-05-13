@@ -55,6 +55,10 @@ export const FloatingField = React.forwardRef<
           id={inputId}
           type={type}
           placeholder=" "
+          // Browser extensions (Temp Mail, password managers, Grammarly…)
+          // inject attributes onto inputs before hydration. Tolerate the
+          // resulting mismatch instead of failing the whole tree.
+          suppressHydrationWarning
           aria-invalid={Boolean(error) || undefined}
           aria-describedby={cn(hint && hintId, error && errorId) || undefined}
           className={cn(

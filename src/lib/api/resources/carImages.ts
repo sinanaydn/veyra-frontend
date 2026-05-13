@@ -33,7 +33,15 @@ export const carImagesApi = {
       `/cars/${carId}/images`,
       fd,
       {
-        headers: { "content-type": "multipart/form-data" },
+        // Two important header rules for multipart:
+        //  1. DO NOT set Content-Type manually — axios picks the FormData
+        //     boundary automatically; a manual value loses it and Spring
+        //     can't parse the body.
+        //  2. DO re-state `X-Veyra-Csrf` explicitly. When axios serializes
+        //     FormData it can drop instance-level default headers; without
+        //     this header the BFF (`/api/proxy`) rejects mutating calls
+        //     with 403 ACCESS_DENIED (CSRF guard).
+        headers: { "X-Veyra-Csrf": "1" },
         onUploadProgress: (evt) => {
           if (onProgress && evt.total) {
             onProgress(Math.round((evt.loaded * 100) / evt.total));

@@ -59,17 +59,17 @@ function readStoredTheme(): Theme {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark"); // SSR default — overwritten in effect
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("dark");
-
-  // Hydrate from localStorage on mount.
-  useEffect(() => {
+  // Lazy initializers run once per render lifecycle:
+  //  - On the server: `typeof window === "undefined"` → returns "dark"
+  //    (matches the SSR default the markup is laid out for).
+  //  - On the client: reads localStorage during the first render, so the
+  //    React state agrees with the DOM class set pre-hydration by
+  //    `ThemeScript`. No setState-in-effect cascade.
+  const [theme, setThemeState] = useState<Theme>(() => readStoredTheme());
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => {
     const stored = readStoredTheme();
-    setThemeState(stored);
-    const resolved = stored === "system" ? getSystemPreference() : stored;
-    setResolvedTheme(resolved);
-    applyTheme(resolved);
-  }, []);
+    return stored === "system" ? getSystemPreference() : stored;
+  });
 
   // React to OS-level theme changes when in `system` mode.
   useEffect(() => {

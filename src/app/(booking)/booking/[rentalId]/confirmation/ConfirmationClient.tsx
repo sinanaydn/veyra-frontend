@@ -49,30 +49,37 @@ const POLL_MS = 2000;
 const MAX_ATTEMPTS = 8; // 8 × 2s = 16s safety window
 
 export function ConfirmationClient({ rentalId }: { rentalId: number }) {
-  const [attempts, setAttempts] = React.useState(0);
-  const [pollingDone, setPollingDone] = React.useState(false);
+  // Wall-clock start — anchored once at mount via lazy initializer.
+  // Used to derive both the displayed attempt counter and the polling
+  // timeout, without writing back into state on every fetch tick.
+  const [startedAt, setStartedAt] = React.useState<number>(() => Date.now());
+  const [timedOut, setTimedOut] = React.useState(false);
   const reduce = useReducedMotion();
 
   const rentalQuery = useRental(rentalId, {
-    pollMs: pollingDone ? 0 : POLL_MS,
+    pollMs: timedOut ? 0 : POLL_MS,
     pollWhile: ["PENDING"],
   });
 
-  // Count attempts while pending; cap at MAX_ATTEMPTS.
+  // Hard stop after the budget elapses — single async timer, no
+  // per-tick setState in effect.
   React.useEffect(() => {
-    if (!rentalQuery.data) return;
-    if (rentalQuery.data.status !== "PENDING") {
-      setPollingDone(true);
-      return;
-    }
-    if (rentalQuery.isFetching) {
-      setAttempts((a) => {
-        const next = Math.min(a + 1, MAX_ATTEMPTS);
-        if (next >= MAX_ATTEMPTS) setPollingDone(true);
-        return next;
-      });
-    }
-  }, [rentalQuery.isFetching, rentalQuery.data]);
+    const id = setTimeout(
+      () => setTimedOut(true),
+      MAX_ATTEMPTS * POLL_MS,
+    );
+    return () => clearTimeout(id);
+  }, [startedAt]);
+
+  // Display-only counter derived from the query's last update time.
+  // `dataUpdatedAt` is a stable timestamp on the query state that ticks
+  // forward on every successful refetch, giving us a natural counter
+  // without any setState-in-effect mirror.
+  const tickRef = rentalQuery.dataUpdatedAt || startedAt;
+  const attempts = Math.min(
+    MAX_ATTEMPTS,
+    Math.max(1, Math.floor((tickRef - startedAt) / POLL_MS) + 1),
+  );
 
   // ----- States -----
 
@@ -103,7 +110,7 @@ export function ConfirmationClient({ rentalId }: { rentalId: number }) {
 
   const rental = rentalQuery.data;
   const isPending = rental.status === "PENDING";
-  const stalled = isPending && pollingDone;
+  const stalled = isPending && timedOut;
   const success = !isPending && rental.status !== "CANCELLED";
 
   return (
@@ -219,8 +226,8 @@ export function ConfirmationClient({ rentalId }: { rentalId: number }) {
               <Button
                 variant="outline"
                 onClick={() => {
-                  setAttempts(0);
-                  setPollingDone(false);
+                  setStartedAt(Date.now());
+                  setTimedOut(false);
                   rentalQuery.refetch();
                 }}
                 className="h-11 px-5"

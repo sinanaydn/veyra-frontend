@@ -6,6 +6,7 @@
  * gallery are client islands.
  */
 
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ApiError } from "@/lib/api/errors";
@@ -73,12 +74,12 @@ export default async function CarDetailPage({ params }: PageProps) {
       >
         <ol className="flex flex-wrap items-center gap-2">
           <li>
-            <a
+            <Link
               href="/cars"
               className="transition-colors hover:text-foreground"
             >
               {t.cars.catalogTitle}
-            </a>
+            </Link>
           </li>
           <li aria-hidden>›</li>
           <li>
