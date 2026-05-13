@@ -69,6 +69,21 @@ export default function AdminDashboardPage() {
         staleTime: 30_000,
       },
       {
+        // Revenue feed — pulls a generous slice of COMPLETED payments
+        // so the dashboard headline figure means "total revenue" rather
+        // than "last 5 receipts". Backend has no aggregate endpoint;
+        // this is the pragmatic substitute. If the fleet ever crosses
+        // 500 payments we'll wire a `/payments/revenue` SUM endpoint
+        // server-side instead of paginating further.
+        queryKey: ["admin-dash", "payments-revenue-slice"],
+        queryFn: () =>
+          paymentsApi.list(
+            { status: "COMPLETED" },
+            { page: 0, size: 500, sort: ["createdAt,desc"] },
+          ),
+        staleTime: 60_000,
+      },
+      {
         queryKey: ["admin-dash", "cars-total"],
         queryFn: () => carsApi.list({}, { page: 0, size: 1 }),
         staleTime: 60_000,
@@ -96,18 +111,22 @@ export default function AdminDashboardPage() {
     activeRentals,
     recentPayments,
     completedPayments,
+    revenueSlice,
     carsTotal,
     brands,
     models,
     usersTotal,
   ] = results;
 
-  // Revenue = sum of recent COMPLETED payments amounts (approximation — true
-  // revenue would need a backend aggregate endpoint).
-  const recentRevenue =
-    recentPayments.data?.content
-      ?.filter((p) => p.status === "COMPLETED")
-      .reduce((sum, p) => sum + p.amount, 0) ?? 0;
+  // Revenue = sum over the COMPLETED slice (≤500 rows). Covers the full
+  // dataset for any realistic dev/demo size; for production scale we'll
+  // swap in a backend aggregate endpoint.
+  const totalRevenue =
+    revenueSlice.data?.content?.reduce((sum, p) => sum + p.amount, 0) ?? 0;
+  const totalRevenueCount = revenueSlice.data?.totalElements ?? 0;
+  const slicePartial =
+    !!revenueSlice.data?.content &&
+    revenueSlice.data.content.length < totalRevenueCount;
 
   return (
     <div className="mx-auto max-w-7xl">
@@ -154,10 +173,16 @@ export default function AdminDashboardPage() {
         <AdminStatCard
           icon={CircleDollarSign}
           label={t.admin.statRevenue}
-          value={
-            recentPayments.isLoading ? "…" : currencyTRY(recentRevenue)
+          value={revenueSlice.isLoading ? "…" : currencyTRY(totalRevenue)}
+          hint={
+            revenueSlice.isLoading
+              ? undefined
+              : totalRevenueCount === 0
+                ? "Henüz tamamlanmış ödeme yok"
+                : slicePartial
+                  ? `Son ${revenueSlice.data?.content.length ?? 0} / ${totalRevenueCount} ödeme`
+                  : `${totalRevenueCount} tamamlanmış ödeme`
           }
-          hint="Son 5 ödeme toplamı"
         />
       </section>
 

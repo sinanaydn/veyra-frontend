@@ -34,13 +34,16 @@ export function SafeImage({
   fallbackIconSize = 24,
   ...rest
 }: Props) {
+  // "Adjust state during render" pattern — when `src` changes (e.g. a
+  // refetch returned a fresh presigned URL), reset the errored flag so
+  // the new URL gets a chance to load. Cheaper than an effect cascade.
+  // https://react.dev/reference/react/useState#storing-information-from-previous-renders
+  const [prevSrc, setPrevSrc] = React.useState(src);
   const [errored, setErrored] = React.useState(false);
-
-  // Reset error state when src changes — a fresh URL (e.g. after refetch)
-  // should re-attempt loading.
-  React.useEffect(() => {
+  if (src !== prevSrc) {
+    setPrevSrc(src);
     setErrored(false);
-  }, [src]);
+  }
 
   if (!src || errored) {
     return (

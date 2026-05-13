@@ -68,12 +68,17 @@ export function CheckoutClient({ rentalId }: Props) {
     flipped: false,
   });
 
-  // Already paid? Skip straight to confirmation.
+  // Per SPEC GAP-3: backend status enum is ACTIVE|COMPLETED|CANCELLED
+  // (no PENDING). A freshly created rental returns ACTIVE — but the user
+  // still needs to complete payment. Only redirect away from checkout
+  // when the rental has reached a terminal state.
   React.useEffect(() => {
     const r = rentalQuery.data;
     if (!r) return;
-    if (r.status !== "PENDING") {
+    if (r.status === "COMPLETED") {
       router.replace(`/booking/${rentalId}/confirmation`);
+    } else if (r.status === "CANCELLED") {
+      router.replace(`/account/rentals/${rentalId}`);
     }
   }, [rentalQuery.data, rentalId, router]);
 
@@ -124,7 +129,7 @@ export function CheckoutClient({ rentalId }: Props) {
 
   const rental = rentalQuery.data;
 
-  if (rental.status !== "PENDING") {
+  if (rental.status === "COMPLETED" || rental.status === "CANCELLED") {
     // useEffect above will redirect; render a courteous interstitial.
     return (
       <EmptyState
